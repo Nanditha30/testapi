@@ -1,7 +1,7 @@
 from flask import Flask,jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
-from resources.emp import Emp,EmpLogin
+from resourses.emp import Emp,EmpLogin
 
 app=Flask(__name__)
 app.config['PROPAGATE_EXCEPTIONS']=True
