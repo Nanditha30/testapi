@@ -1,20 +1,31 @@
-from flask import Flask
+from flask import Flask,jsonify
 from flask_restful import Api
-from resourses.emp import Emp
-import pymysql
+from flask_jwt_extended import JWTManager
+from resources.emp import Emp,EmpLogin
 
 app=Flask(__name__)
-
-'''@app.route('/')
-def home():
-    connection=pymysql.connect(host='localhost',
-                                user='root',
-                                password='Nanditha@1',
-                                db='testapi',
-                                cursorclass=pymysql.cursors.DictCursor)
-    mycursor=connection.cursor()
-    mycursor.execute('select*from testapi.emp;')
-    return str(mycursor.fetchall())'''
+app.config['PROPAGATE_EXCEPTIONS']=True
+app.config['JWT_SECRET_KEY']='coscskillup'
 api=Api(app)
+jwt=JWTManager(app)
+
+@jwt.unauthorized_loader
+def missing_token_callback(error):
+    return jsonify({
+        'error': 'authorization_required',
+        "description": "Request does not contain an access token."
+    }), 401
+
+@jwt.invalid_token_loader
+def invalid_token_callback(error):
+    return jsonify({
+        'error': 'invalid_token',
+        'message': 'Signature verification failed.'
+    }), 401
+
+
 api.add_resource(Emp,'/emp')
-app.run(port='8080',debug='true')
+api.add_resource(EmpLogin,'/login')
+
+if __name__=='__main__':
+    app.run()

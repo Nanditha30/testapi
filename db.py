@@ -2,9 +2,9 @@ import pymysql
 from flask import jsonify
 from decimal import Decimal
 def query(querystr,return_json=True):
-    connection=pymysql.connect(host='localhost',
-                                user='root',
-                                password='Nanditha@1',
+    connection=pymysql.connect(host='cosc-skillup.cxgok3weok8n.ap-south-1.rds.amazonaws.com',
+                                user='admin',
+                                password='coscskillup',
                                 db='testapi',
                                 cursorclass=pymysql.cursors.DictCursor)
     connection.begin()
